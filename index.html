@@ -1699,10 +1699,26 @@ function renderExpenseTab() {
   const totalSpent = tasks.reduce((sum, t) => sum + (t.expenses || []).reduce((s, e) => s + e.amount, 0), 0);
   const totalEntries = tasks.reduce((sum, t) => sum + (t.expenses || []).length, 0);
 
+  // カテゴリ別小計
+  const catSummaryRows = categories.map(cat => {
+    const catTasks = tasks.filter(t => t.category === cat);
+    if (catTasks.length === 0) return '';
+    const catTotal = catTasks.reduce((sum, t) => sum + (t.expenses || []).reduce((s, e) => s + e.amount, 0), 0);
+    const colors = getCatColors(cat);
+    const dotStyle = colors ? `background:${colors.dot}` : '';
+    const dotClass = colors ? 'cat-dot' : 'cat-dot ' + catDotClass(cat);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+      <span class="${dotClass}" style="${dotStyle}"></span>
+      <span style="flex:1;font-size:0.8rem;opacity:0.9;">${escHtml(cat)}</span>
+      <span style="font-size:0.85rem;font-weight:700;">¥${catTotal.toLocaleString()}</span>
+    </div>`;
+  }).join('');
+
   let html = `<div class="expense-total-card">
     <div class="expense-total-label">💴 支出合計</div>
     <div class="expense-total-amount">¥${totalSpent.toLocaleString()}</div>
     <div class="expense-total-sub">${totalEntries}件の支出記録</div>
+    ${catSummaryRows ? `<div style="margin-top:14px;border-top:1px solid rgba(255,255,255,0.25);padding-top:12px;">${catSummaryRows}</div>` : ''}
   </div>`;
 
   categories.forEach(cat => {
