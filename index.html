@@ -504,8 +504,8 @@ body {
     <button class="data-btn" onclick="switchTab('data')">⚙ データ</button>
   </div>
   <div class="tabs">
-    <button class="tab-btn active" data-tab="life" onclick="switchTab('life')">🌍 人生</button>
-    <button class="tab-btn" data-tab="tasks" onclick="switchTab('tasks')">📋 今年</button>
+    <button class="tab-btn active" data-tab="tasks" onclick="switchTab('tasks')">📋 今年</button>
+    <button class="tab-btn" data-tab="life" onclick="switchTab('life')">🌍 人生</button>
     <button class="tab-btn" data-tab="expense" onclick="switchTab('expense')">💴 支出</button>
   </div>
 </div>
@@ -1393,7 +1393,7 @@ function resetData() {
 // Init
 // ============================================================
 loadData();
-renderLife();
+switchTab('tasks');
 </script>
 </body>
 </html>
