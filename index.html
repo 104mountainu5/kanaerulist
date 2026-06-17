@@ -572,13 +572,7 @@ body {
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">年代</label>
-          <select class="form-select" id="lf-decade">
-            <option value="20s">20代</option>
-            <option value="30s">30代</option>
-            <option value="40s">40代</option>
-            <option value="50s">50代</option>
-            <option value="60s">60代以降</option>
-          </select>
+          <select class="form-select" id="lf-decade"></select>
         </div>
         <div class="form-group">
           <label class="form-label">状態</label>
@@ -695,11 +689,13 @@ const SK_LIFE    = 'kanaerumap_life';
 const SK_COLLAPSED = 'kanaerumap_collapsed';
 
 const DECADES = [
-  { key:'20s', label:'20代' },
-  { key:'30s', label:'30代' },
-  { key:'40s', label:'40代' },
-  { key:'50s', label:'50代' },
-  { key:'60s', label:'60代以降' },
+  { key:'40s',  label:'40代' },
+  { key:'50s',  label:'50代' },
+  { key:'60s',  label:'60代' },
+  { key:'70s',  label:'70代' },
+  { key:'80s',  label:'80代' },
+  { key:'90s',  label:'90代' },
+  { key:'100s', label:'100代〜' },
 ];
 
 const PALETTE = [
@@ -856,10 +852,13 @@ function renderLife() {
   container.innerHTML = timelineHtml;
 }
 
-function openLifeModal(id = null, defaultDecade = '30s') {
+function openLifeModal(id = null, defaultDecade = DECADES[0].key) {
   editingLifeId = id;
   const item = id ? lifeItems.find(i => i.id === id) : null;
   document.getElementById('life-modal-title').textContent = id ? 'やりたいことを編集' : 'やりたいことを追加';
+  // 年代セレクトをDECADESから生成
+  const decSel = document.getElementById('lf-decade');
+  decSel.innerHTML = DECADES.map(d => `<option value="${d.key}">${d.label}</option>`).join('');
   document.getElementById('lf-title').value  = item ? item.title  : '';
   document.getElementById('lf-decade').value = item ? item.decade : defaultDecade;
   document.getElementById('lf-status').value = item ? item.status : 'active';
